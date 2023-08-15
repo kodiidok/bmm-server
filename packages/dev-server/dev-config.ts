@@ -21,6 +21,7 @@ import path from 'path';
 import { DataSourceOptions } from 'typeorm';
 
 import { MultivendorPlugin } from './example-plugins/multivendor-plugin/multivendor.plugin';
+import { PerformerPlugin } from './plugins/performer/performer-plugin';
 
 /**
  * Config settings used during development
@@ -61,8 +62,21 @@ export const devConfig: VendureConfig = {
     paymentOptions: {
         paymentMethodHandlers: [dummyPaymentHandler],
     },
-
-    customFields: {},
+    customFields: {
+        Product: [
+            {
+                name: 'productType',
+                type: 'string',
+                ui: {
+                    component: 'select-form-input',
+                    options: [
+                        { value: 'ticket', label: [{ languageCode: LanguageCode.en, value: 'Ticket' }] },
+                        { value: 'booking', label: [{ languageCode: LanguageCode.en, value: 'Booking' }] },
+                    ],
+                },
+            },
+        ],
+    },
     logger: new DefaultLogger({ level: LogLevel.Verbose }),
     importExportOptions: {
         importAssetsDir: path.join(__dirname, 'import-assets'),
@@ -77,7 +91,7 @@ export const devConfig: VendureConfig = {
             assetUploadDir: path.join(__dirname, 'assets'),
         }),
         DefaultSearchPlugin.init({ bufferUpdates: false, indexStockStatus: false }),
-        BullMQJobQueuePlugin.init({}),
+        // BullMQJobQueuePlugin.init({}),
         // DefaultJobQueuePlugin.init({}),
         // JobQueueTestPlugin.init({ queueCount: 10 }),
         // ElasticsearchPlugin.init({
@@ -97,6 +111,7 @@ export const devConfig: VendureConfig = {
                 changeEmailAddressUrl: 'http://localhost:4201/change-email-address',
             },
         }),
+        PerformerPlugin,
         AdminUiPlugin.init({
             route: 'admin',
             port: 5001,
@@ -163,8 +178,8 @@ function getDbConfig(): DataSourceOptions {
                 host: process.env.DB_HOST || 'localhost',
                 port: Number(process.env.DB_PORT) || 5432,
                 username: process.env.DB_USERNAME || 'postgres',
-                password: process.env.DB_PASSWORD || 'postgres',
-                database: process.env.DB_NAME || 'vendure',
+                password: process.env.DB_PASSWORD || 'pwd@kodi',
+                database: process.env.DB_NAME || 'bookmymusic',
                 schema: process.env.DB_SCHEMA || 'public',
             };
         case 'sqlite':

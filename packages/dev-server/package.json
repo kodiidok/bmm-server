@@ -30,6 +30,12 @@
         "concurrently": "^5.0.0",
         "csv-stringify": "^5.3.3",
         "dayjs": "^1.11.7",
-        "progress": "^2.0.3"
+        "progress": "^2.0.3",
+        "@graphql-codegen/add": "5.0.0",
+        "@graphql-codegen/cli": "4.0.1",
+        "@graphql-codegen/typed-document-node": "^5.0.0",
+        "@graphql-codegen/typescript": "4.0.0",
+        "@graphql-codegen/typescript-compatibility": "2.1.5",
+        "@graphql-codegen/typescript-operations": "4.0.0"
     }
 }

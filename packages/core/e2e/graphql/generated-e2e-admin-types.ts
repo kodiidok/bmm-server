@@ -807,9 +807,19 @@ export type CreatePaymentMethodInput = {
     translations: Array<PaymentMethodTranslationInput>;
 };
 
+export type CreatePerformerInput = {
+    description: Scalars['String'];
+    name: Scalars['String'];
+    rating: Scalars['Float'];
+};
+
+export type CreateProductCustomFieldsInput = {
+    productType?: InputMaybe<Scalars['String']>;
+};
+
 export type CreateProductInput = {
     assetIds?: InputMaybe<Array<Scalars['ID']>>;
-    customFields?: InputMaybe<Scalars['JSON']>;
+    customFields?: InputMaybe<CreateProductCustomFieldsInput>;
     enabled?: InputMaybe<Scalars['Boolean']>;
     facetValueIds?: InputMaybe<Array<Scalars['ID']>>;
     featuredAssetId?: InputMaybe<Scalars['ID']>;
@@ -2577,6 +2587,7 @@ export type Mutation = {
     createFacetValues: Array<FacetValue>;
     /** Create existing PaymentMethod */
     createPaymentMethod: PaymentMethod;
+    createPerformer: Performer;
     /** Create a new Product */
     createProduct: Product;
     /** Create a new ProductOption within a ProductOptionGroup */
@@ -2647,6 +2658,7 @@ export type Mutation = {
     deletePaymentMethod: DeletionResponse;
     /** Delete multiple PaymentMethods */
     deletePaymentMethods: Array<DeletionResponse>;
+    deletePerformer: Scalars['Boolean'];
     /** Delete a Product */
     deleteProduct: DeletionResponse;
     /** Delete a ProductOption */
@@ -2779,6 +2791,7 @@ export type Mutation = {
     updateOrderNote: HistoryEntry;
     /** Update an existing PaymentMethod */
     updatePaymentMethod: PaymentMethod;
+    updatePerformer: Performer;
     /** Update an existing Product */
     updateProduct: Product;
     /** Create a new ProductOption within a ProductOptionGroup */
@@ -2959,6 +2972,10 @@ export type MutationCreatePaymentMethodArgs = {
     input: CreatePaymentMethodInput;
 };
 
+export type MutationCreatePerformerArgs = {
+    input: CreatePerformerInput;
+};
+
 export type MutationCreateProductArgs = {
     input: CreateProductInput;
 };
@@ -3110,6 +3127,10 @@ export type MutationDeletePaymentMethodArgs = {
 export type MutationDeletePaymentMethodsArgs = {
     force?: InputMaybe<Scalars['Boolean']>;
     ids: Array<Scalars['ID']>;
+};
+
+export type MutationDeletePerformerArgs = {
+    id: Scalars['ID'];
 };
 
 export type MutationDeleteProductArgs = {
@@ -3404,6 +3425,11 @@ export type MutationUpdateOrderNoteArgs = {
 
 export type MutationUpdatePaymentMethodArgs = {
     input: UpdatePaymentMethodInput;
+};
+
+export type MutationUpdatePerformerArgs = {
+    id: Scalars['ID'];
+    input: UpdatePerformerInput;
 };
 
 export type MutationUpdateProductArgs = {
@@ -3934,6 +3960,14 @@ export type PaymentStateTransitionError = ErrorResult & {
     transitionError: Scalars['String'];
 };
 
+export type Performer = Node & {
+    createdAt: Scalars['DateTime'];
+    description?: Maybe<Scalars['String']>;
+    id: Scalars['ID'];
+    rating?: Maybe<Scalars['Float']>;
+    updatedAt: Scalars['DateTime'];
+};
+
 /**
  * @description
  * Permissions for administrators and customers. Used to control access to
@@ -4178,7 +4212,7 @@ export type Product = Node & {
     channels: Array<Channel>;
     collections: Array<Collection>;
     createdAt: Scalars['DateTime'];
-    customFields?: Maybe<Scalars['JSON']>;
+    customFields?: Maybe<ProductCustomFields>;
     description: Scalars['String'];
     enabled: Scalars['Boolean'];
     facetValues: Array<FacetValue>;
@@ -4200,6 +4234,10 @@ export type ProductVariantListArgs = {
     options?: InputMaybe<ProductVariantListOptions>;
 };
 
+export type ProductCustomFields = {
+    productType?: Maybe<Scalars['String']>;
+};
+
 export type ProductFilterParameter = {
     createdAt?: InputMaybe<DateOperators>;
     description?: InputMaybe<StringOperators>;
@@ -4208,6 +4246,7 @@ export type ProductFilterParameter = {
     id?: InputMaybe<IdOperators>;
     languageCode?: InputMaybe<StringOperators>;
     name?: InputMaybe<StringOperators>;
+    productType?: InputMaybe<StringOperators>;
     slug?: InputMaybe<StringOperators>;
     updatedAt?: InputMaybe<DateOperators>;
 };
@@ -4297,6 +4336,7 @@ export type ProductSortParameter = {
     description?: InputMaybe<SortOrder>;
     id?: InputMaybe<SortOrder>;
     name?: InputMaybe<SortOrder>;
+    productType?: InputMaybe<SortOrder>;
     slug?: InputMaybe<SortOrder>;
     updatedAt?: InputMaybe<SortOrder>;
 };
@@ -4632,6 +4672,8 @@ export type Query = {
     paymentMethodHandlers: Array<ConfigurableOperationDefinition>;
     paymentMethods: PaymentMethodList;
     pendingSearchIndexUpdates: Scalars['Int'];
+    performer?: Maybe<Performer>;
+    performers: Array<Performer>;
     /** Used for real-time previews of the contents of a Collection */
     previewCollectionVariants: ProductVariantList;
     /** Get a Product either by id or slug. If neither id nor slug is specified, an error will result. */
@@ -4780,6 +4822,10 @@ export type QueryPaymentMethodArgs = {
 
 export type QueryPaymentMethodsArgs = {
     options?: InputMaybe<PaymentMethodListOptions>;
+};
+
+export type QueryPerformerArgs = {
+    id: Scalars['ID'];
 };
 
 export type QueryPreviewCollectionVariantsArgs = {
@@ -5894,9 +5940,19 @@ export type UpdatePaymentMethodInput = {
     translations?: InputMaybe<Array<PaymentMethodTranslationInput>>;
 };
 
+export type UpdatePerformerInput = {
+    description?: InputMaybe<Scalars['String']>;
+    name?: InputMaybe<Scalars['String']>;
+    rating?: InputMaybe<Scalars['Float']>;
+};
+
+export type UpdateProductCustomFieldsInput = {
+    productType?: InputMaybe<Scalars['String']>;
+};
+
 export type UpdateProductInput = {
     assetIds?: InputMaybe<Array<Scalars['ID']>>;
-    customFields?: InputMaybe<Scalars['JSON']>;
+    customFields?: InputMaybe<UpdateProductCustomFieldsInput>;
     enabled?: InputMaybe<Scalars['Boolean']>;
     facetValueIds?: InputMaybe<Array<Scalars['ID']>>;
     featuredAssetId?: InputMaybe<Scalars['ID']>;

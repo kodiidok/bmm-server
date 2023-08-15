@@ -362,6 +362,12 @@ export type CreateCustomerInput = {
     title?: InputMaybe<Scalars['String']>;
 };
 
+export type CreatePerformerInput = {
+    description: Scalars['String'];
+    name: Scalars['String'];
+    rating: Scalars['Float'];
+};
+
 /**
  * @description
  * ISO 4217 currency code
@@ -1563,8 +1569,10 @@ export type Mutation = {
     authenticate: AuthenticationResult;
     /** Create a new Customer Address */
     createCustomerAddress: Address;
+    createPerformer: Performer;
     /** Delete an existing Address */
     deleteCustomerAddress: Success;
+    deletePerformer: Scalars['Boolean'];
     /** Authenticates the user using the native authentication strategy. This mutation is an alias for `authenticate({ native: { ... }})` */
     login: NativeAuthenticationResult;
     /** End the current authenticated session */
@@ -1633,6 +1641,7 @@ export type Mutation = {
     updateCustomerEmailAddress: UpdateCustomerEmailAddressResult;
     /** Update the password of the active Customer */
     updateCustomerPassword: UpdateCustomerPasswordResult;
+    updatePerformer: Performer;
     /**
      * Verify a Customer email address with the token sent to that address. Only applicable if `authOptions.requireVerification` is set to true.
      *
@@ -1669,7 +1678,15 @@ export type MutationCreateCustomerAddressArgs = {
     input: CreateAddressInput;
 };
 
+export type MutationCreatePerformerArgs = {
+    input: CreatePerformerInput;
+};
+
 export type MutationDeleteCustomerAddressArgs = {
+    id: Scalars['ID'];
+};
+
+export type MutationDeletePerformerArgs = {
     id: Scalars['ID'];
 };
 
@@ -1748,6 +1765,11 @@ export type MutationUpdateCustomerEmailAddressArgs = {
 export type MutationUpdateCustomerPasswordArgs = {
     currentPassword: Scalars['String'];
     newPassword: Scalars['String'];
+};
+
+export type MutationUpdatePerformerArgs = {
+    id: Scalars['ID'];
+    input: UpdatePerformerInput;
 };
 
 export type MutationVerifyCustomerAccountArgs = {
@@ -2168,6 +2190,14 @@ export type PaymentMethodTranslation = {
     updatedAt: Scalars['DateTime'];
 };
 
+export type Performer = Node & {
+    createdAt: Scalars['DateTime'];
+    description?: Maybe<Scalars['String']>;
+    id: Scalars['ID'];
+    rating?: Maybe<Scalars['Float']>;
+    updatedAt: Scalars['DateTime'];
+};
+
 /**
  * @description
  * Permissions for administrators and customers. Used to control access to
@@ -2399,7 +2429,7 @@ export type Product = Node & {
     assets: Array<Asset>;
     collections: Array<Collection>;
     createdAt: Scalars['DateTime'];
-    customFields?: Maybe<Scalars['JSON']>;
+    customFields?: Maybe<ProductCustomFields>;
     description: Scalars['String'];
     facetValues: Array<FacetValue>;
     featuredAsset?: Maybe<Asset>;
@@ -2420,12 +2450,17 @@ export type ProductVariantListArgs = {
     options?: InputMaybe<ProductVariantListOptions>;
 };
 
+export type ProductCustomFields = {
+    productType?: Maybe<Scalars['String']>;
+};
+
 export type ProductFilterParameter = {
     createdAt?: InputMaybe<DateOperators>;
     description?: InputMaybe<StringOperators>;
     id?: InputMaybe<IdOperators>;
     languageCode?: InputMaybe<StringOperators>;
     name?: InputMaybe<StringOperators>;
+    productType?: InputMaybe<StringOperators>;
     slug?: InputMaybe<StringOperators>;
     updatedAt?: InputMaybe<DateOperators>;
 };
@@ -2494,6 +2529,7 @@ export type ProductSortParameter = {
     description?: InputMaybe<SortOrder>;
     id?: InputMaybe<SortOrder>;
     name?: InputMaybe<SortOrder>;
+    productType?: InputMaybe<SortOrder>;
     slug?: InputMaybe<SortOrder>;
     updatedAt?: InputMaybe<SortOrder>;
 };
@@ -2676,6 +2712,8 @@ export type Query = {
      * general anonymous access to Order data.
      */
     orderByCode?: Maybe<Order>;
+    performer?: Maybe<Performer>;
+    performers: Array<Performer>;
     /** Get a Product either by id or slug. If neither 'id' nor 'slug' is specified, an error will result. */
     product?: Maybe<Product>;
     /** Get a list of Products */
@@ -2707,6 +2745,10 @@ export type QueryOrderArgs = {
 
 export type QueryOrderByCodeArgs = {
     code: Scalars['String'];
+};
+
+export type QueryPerformerArgs = {
+    id: Scalars['ID'];
 };
 
 export type QueryProductArgs = {
@@ -3134,6 +3176,12 @@ export type UpdateOrderItemsResult =
     | Order
     | OrderLimitError
     | OrderModificationError;
+
+export type UpdatePerformerInput = {
+    description?: InputMaybe<Scalars['String']>;
+    name?: InputMaybe<Scalars['String']>;
+    rating?: InputMaybe<Scalars['Float']>;
+};
 
 export type User = Node & {
     authenticationMethods: Array<AuthenticationMethod>;
