@@ -808,9 +808,9 @@ export type CreatePaymentMethodInput = {
 };
 
 export type CreatePerformerInput = {
-    description: Scalars['String'];
+    description?: InputMaybe<Scalars['String']>;
     name: Scalars['String'];
-    rating: Scalars['Float'];
+    type: Scalars['String'];
 };
 
 export type CreateProductCustomFieldsInput = {
@@ -3964,8 +3964,48 @@ export type Performer = Node & {
     createdAt: Scalars['DateTime'];
     description?: Maybe<Scalars['String']>;
     id: Scalars['ID'];
+    name: Scalars['String'];
     rating?: Maybe<Scalars['Float']>;
+    type: Scalars['String'];
     updatedAt: Scalars['DateTime'];
+};
+
+export type PerformerFilterParameter = {
+    createdAt?: InputMaybe<DateOperators>;
+    description?: InputMaybe<StringOperators>;
+    id?: InputMaybe<IdOperators>;
+    name?: InputMaybe<StringOperators>;
+    rating?: InputMaybe<NumberOperators>;
+    type?: InputMaybe<StringOperators>;
+    updatedAt?: InputMaybe<DateOperators>;
+};
+
+export type PerformerList = PaginatedList & {
+    items: Array<Performer>;
+    totalItems: Scalars['Int'];
+};
+
+export type PerformerListOptions = {
+    /** Allows the results to be filtered */
+    filter?: InputMaybe<PerformerFilterParameter>;
+    /** Specifies whether multiple "filter" arguments should be combines with a logical AND or OR operation. Defaults to AND. */
+    filterOperator?: InputMaybe<LogicalOperator>;
+    /** Skips the first n results, for use in pagination */
+    skip?: InputMaybe<Scalars['Int']>;
+    /** Specifies which properties to sort the results by */
+    sort?: InputMaybe<PerformerSortParameter>;
+    /** Takes n results, for use in pagination */
+    take?: InputMaybe<Scalars['Int']>;
+};
+
+export type PerformerSortParameter = {
+    createdAt?: InputMaybe<SortOrder>;
+    description?: InputMaybe<SortOrder>;
+    id?: InputMaybe<SortOrder>;
+    name?: InputMaybe<SortOrder>;
+    rating?: InputMaybe<SortOrder>;
+    type?: InputMaybe<SortOrder>;
+    updatedAt?: InputMaybe<SortOrder>;
 };
 
 /**
@@ -4673,7 +4713,7 @@ export type Query = {
     paymentMethods: PaymentMethodList;
     pendingSearchIndexUpdates: Scalars['Int'];
     performer?: Maybe<Performer>;
-    performers: Array<Performer>;
+    performers: PerformerList;
     /** Used for real-time previews of the contents of a Collection */
     previewCollectionVariants: ProductVariantList;
     /** Get a Product either by id or slug. If neither id nor slug is specified, an error will result. */
@@ -4826,6 +4866,10 @@ export type QueryPaymentMethodsArgs = {
 
 export type QueryPerformerArgs = {
     id: Scalars['ID'];
+};
+
+export type QueryPerformersArgs = {
+    options?: InputMaybe<PerformerListOptions>;
 };
 
 export type QueryPreviewCollectionVariantsArgs = {
@@ -5942,8 +5986,8 @@ export type UpdatePaymentMethodInput = {
 
 export type UpdatePerformerInput = {
     description?: InputMaybe<Scalars['String']>;
-    name?: InputMaybe<Scalars['String']>;
-    rating?: InputMaybe<Scalars['Float']>;
+    name: Scalars['String'];
+    type: Scalars['String'];
 };
 
 export type UpdateProductCustomFieldsInput = {

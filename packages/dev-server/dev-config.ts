@@ -21,6 +21,7 @@ import path from 'path';
 import { DataSourceOptions } from 'typeorm';
 
 import { MultivendorPlugin } from './example-plugins/multivendor-plugin/multivendor.plugin';
+import { Performer } from './plugins/performer/entities/performer.entity';
 import { PerformerPlugin } from './plugins/performer/performer-plugin';
 
 /**
@@ -54,7 +55,7 @@ export const devConfig: VendureConfig = {
         },
     },
     dbConnectionOptions: {
-        synchronize: false,
+        synchronize: true,
         logging: false,
         migrations: [path.join(__dirname, 'migrations/*.ts')],
         ...getDbConfig(),
@@ -168,7 +169,7 @@ export const devConfig: VendureConfig = {
 };
 
 function getDbConfig(): DataSourceOptions {
-    const dbType = process.env.DB || 'mysql';
+    const dbType = process.env.DB || 'postgres';
     switch (dbType) {
         case 'postgres':
             console.log('Using postgres connection');

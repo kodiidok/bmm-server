@@ -1,10 +1,15 @@
 # database migrations after custom field or entities change
 DB=postgres node -r ts-node/register migration.ts generate migration
 DB=postgres node -r ts-node/register migration.ts run
+yarn gen:migration
+yarn run:migration
 
 # codegen
 DB=postgres yarn codegen
+yarn codegen
 
 # run
+yarn start
+yarn dev-server:start
 DB=postgres yarn start
 DB=postgres yarn dev-server:start

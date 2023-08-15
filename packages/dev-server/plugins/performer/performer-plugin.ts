@@ -1,6 +1,6 @@
 import { PluginCommonModule, VendurePlugin } from '@vendure/core';
 
-import { Performer } from '../performer-review/entities/performer.entity';
+import { Performer } from '../performer/entities/performer.entity';
 
 import { adminApiExtensions, shopApiExtensions } from './api/api-extensions';
 
