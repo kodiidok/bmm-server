@@ -9,9 +9,9 @@ import { Allow } from '../../../../core/src/api/decorators/allow.decorator';
 import { RelationPaths, Relations } from '../../../../core/src/api/decorators/relations.decorator';
 import { Ctx } from '../../../../core/src/api/decorators/request-context.decorator';
 import { Transaction } from '../../../../core/src/api/decorators/transaction.decorator';
-import { Performer } from '../../performer-review/entities/performer.entity';
+import { Performer } from '../../performer/entities/performer.entity';
 import { readPerformer } from '../performer-permissions';
-import { PerformerService } from '../services/performer-service';
+import { PerformerService } from '../services/performer.service';
 
 @Resolver('Performer')
 export class PerformerEntityResolver {

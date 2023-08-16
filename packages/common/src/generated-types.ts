@@ -4194,6 +4194,7 @@ export type PaymentStateTransitionError = ErrorResult & {
 export type Performer = Node & {
   __typename?: 'Performer';
   createdAt: Scalars['DateTime'];
+  deletedAt: Scalars['DateTime'];
   description?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   name: Scalars['String'];
@@ -4204,6 +4205,7 @@ export type Performer = Node & {
 
 export type PerformerFilterParameter = {
   createdAt?: InputMaybe<DateOperators>;
+  deletedAt?: InputMaybe<DateOperators>;
   description?: InputMaybe<StringOperators>;
   id?: InputMaybe<IdOperators>;
   name?: InputMaybe<StringOperators>;
@@ -4233,6 +4235,7 @@ export type PerformerListOptions = {
 
 export type PerformerSortParameter = {
   createdAt?: InputMaybe<SortOrder>;
+  deletedAt?: InputMaybe<SortOrder>;
   description?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
   name?: InputMaybe<SortOrder>;

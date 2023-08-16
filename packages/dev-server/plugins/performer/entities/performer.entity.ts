@@ -14,9 +14,12 @@ export class Performer extends VendureEntity {
     @Column()
     type: string;
 
-    @Column()
+    @Column({ nullable: true })
     description: string;
 
-    @Column()
+    @Column({ nullable: true, type: 'float' })
     rating: number;
+
+    @Column({ nullable: true })
+    deletedAt: Date;
 }

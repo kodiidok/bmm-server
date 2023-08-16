@@ -7,6 +7,7 @@ export const commonApiExtensions = gql`
         type: String!
         createdAt: DateTime!
         updatedAt: DateTime!
+        deletedAt: DateTime
         description: String
         rating: Float
     }
