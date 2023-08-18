@@ -4,6 +4,7 @@ import { Performer } from '../performer/entities/performer.entity';
 
 import { adminApiExtensions, shopApiExtensions } from './api/api-extensions';
 import { PerformerAdminResolver } from './api/performer-admin.resolver';
+import { PerformerShopResolver } from './api/performer-shop.resolver';
 import { readPerformer } from './performer-permissions';
 import { PerformerService } from './services/performer.service';
 
@@ -13,7 +14,7 @@ import { PerformerService } from './services/performer.service';
     entities: [Performer],
     shopApiExtensions: {
         schema: shopApiExtensions,
-        resolvers: [],
+        resolvers: [PerformerShopResolver],
     },
     adminApiExtensions: {
         schema: adminApiExtensions,
