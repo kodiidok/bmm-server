@@ -1,4 +1,5 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { PerformerListOptions } from '@vendure/common/src/generated-types';
 import {
     Allow,
     Ctx,
@@ -26,4 +27,17 @@ export class PerformerAdminResolver {
     async performer(@Ctx() ctx: RequestContext, @Args('id') id: string): Promise<Performer | null> {
         return this.performerService.findOneById(ctx, id);
     }
+
+    @Query()
+    async performers(@Ctx() ctx: RequestContext): Promise<Performer[]> {
+        return this.performerService.findAll(ctx);
+    }
+
+    // @Query()
+    // async performers(
+    //     @Ctx() ctx: RequestContext,
+    //     @Args('options') options: PerformerListOptions,
+    // ): Promise<Performer[]> {
+    //     return this.performerService.findPerformers(ctx, options);
+    // }
 }

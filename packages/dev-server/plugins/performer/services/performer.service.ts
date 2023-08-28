@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { PerformerListOptions } from '@vendure/common/src/generated-types';
 import {
     RequestContext,
     ListQueryBuilder,
@@ -50,14 +51,17 @@ export class PerformerService {
         return performer;
     }
 
-    // async findAll(ctx: RequestContext, options?: PerformerListOptions): Promise<PerformerList> {
-    //     const queryBuilder = this.listQueryBuilder
-    //         .build(Performer, options)
-    //         .leftJoinAndSelect('performer.otherEntitiesIfAny', 'otherEntitiesAliasIfAny');
-    //     const [items, totalItems] = await queryBuilder.getManyAndCount();
-    //     return {
-    //         items,
-    //         totalItems,
-    //     };
+    async findAll(ctx: RequestContext): Promise<Performer[]> {
+        const performers = await this.connection.getRepository(ctx, Performer).find();
+        return performers;
+    }
+
+    // async findPerformers(ctx: RequestContext, options: PerformerListOptions): Promise<Performer[]> {
+    //     const query = this.connection
+    //         .getRepository(ctx, Performer)
+    //         .createQueryBuilder('performer')
+    //         .where(options)
+    //         .getMany();
+    //     return query;
     // }
 }
