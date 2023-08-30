@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PerformerListOptions } from '@vendure/common/src/generated-types';
+import { PerformerListOptions, UpdatePerformerInput } from '@vendure/common/src/generated-types';
 import {
     RequestContext,
     ListQueryBuilder,
@@ -16,6 +16,7 @@ import {
     EventBus,
     CustomFieldRelationService,
     TranslatorService,
+    patchEntity,
 } from '@vendure/core';
 import { SlugValidator } from '@vendure/core/dist/service/helpers/slug-validator/slug-validator';
 
@@ -51,17 +52,26 @@ export class PerformerService {
         return performer;
     }
 
-    async findAll(ctx: RequestContext): Promise<Performer[]> {
-        const performers = await this.connection.getRepository(ctx, Performer).find();
-        return performers;
+    async findAll(
+        ctx: RequestContext,
+        options?: PerformerListOptions,
+        // relations?: RelationPaths<Product>,
+    ) {
+        return this.listQueryBuilder
+            .build(Performer, options || undefined, {
+                // relations: ['product'],
+                ctx,
+            })
+            .getManyAndCount()
+            .then(([items, totalItems]) => ({
+                items,
+                totalItems,
+            }));
     }
 
-    // async findPerformers(ctx: RequestContext, options: PerformerListOptions): Promise<Performer[]> {
-    //     const query = this.connection
-    //         .getRepository(ctx, Performer)
-    //         .createQueryBuilder('performer')
-    //         .where(options)
-    //         .getMany();
-    //     return query;
-    // }
+    async updateOneById(ctx: RequestContext, id: ID, input: UpdatePerformerInput) {
+        const performer = await this.connection.getEntityOrThrow(ctx, Performer, id);
+        const updatedPerformer = patchEntity(performer, input);
+        return this.connection.getRepository(ctx, Performer).save(updatedPerformer);
+    }
 }

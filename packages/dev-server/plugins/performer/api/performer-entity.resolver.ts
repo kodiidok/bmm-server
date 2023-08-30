@@ -1,39 +1,36 @@
-import { Args, Parent, ResolveField, Resolver, Mutation, Query } from '@nestjs/graphql';
-import { PaginatedList } from '@vendure/common/lib/shared-types';
-import { Api, ApiType, ListQueryBuilder, TransactionalConnection } from '@vendure/core';
-import { ErrorResultUnion, UserInputError, Translated } from '@vendure/core';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { InputMaybe, PerformerListOptions } from '@vendure/common/src/generated-types';
+import {
+    Allow,
+    Ctx,
+    ListQueryBuilder,
+    patchEntity,
+    Permission,
+    Product,
+    RequestContext,
+    Transaction,
+    TransactionalConnection,
+} from '@vendure/core';
 
-import { Performer as PerformerArgs } from '../../../../common/src/generated-types';
-import { RequestContext } from '../../../../core/src/api//common/request-context';
-import { Allow } from '../../../../core/src/api/decorators/allow.decorator';
-import { RelationPaths, Relations } from '../../../../core/src/api/decorators/relations.decorator';
-import { Ctx } from '../../../../core/src/api/decorators/request-context.decorator';
-import { Transaction } from '../../../../core/src/api/decorators/transaction.decorator';
-import { Performer } from '../../performer/entities/performer.entity';
-import { readPerformer } from '../performer-permissions';
+import { Performer } from '../entities/performer.entity';
 import { PerformerService } from '../services/performer.service';
 
-@Resolver('Performer')
+@Resolver()
 export class PerformerEntityResolver {
-    constructor(private performerService: PerformerService) {}
+    constructor(
+        private connection: TransactionalConnection,
+        private listQueryBuilder: ListQueryBuilder,
+        private performerService: PerformerService,
+    ) {}
 
-    // @Query()
-    // @Allow(readPerformer.Permission)
-    // async performers(
-    //     @Ctx() ctx: RequestContext,
-    //     @Args() args: PerformerArgs,
-    // ): Promise<PaginatedList<Translated<Performer>>> {
-    //     return this.performerService.findAll(ctx, args);
-    // }
+    @Query()
+    async performer(@Ctx() ctx: RequestContext, @Args('id') id: string): Promise<Performer | null> {
+        return this.performerService.findOneById(ctx, id);
+    }
 
-    //     @Transaction()
-    //     @Mutation()
-    //     @Allow(Permission.CreateCatalog, Permission.CreateProduct)
-    //     async createProduct(
-    //         @Ctx() ctx: RequestContext,
-    //         @Args() args: MutationCreateProductArgs,
-    //     ): Promise<Translated<Product>> {
-    //         const { input } = args;
-    //         return this.productService.create(ctx, input);
-    //     }
+    @Query()
+    // @Allow(Permission.ReadCatalog)
+    async performers(@Ctx() ctx: RequestContext, @Args('options') options: InputMaybe<PerformerListOptions>) {
+        return this.performerService.findAll(ctx, options);
+    }
 }

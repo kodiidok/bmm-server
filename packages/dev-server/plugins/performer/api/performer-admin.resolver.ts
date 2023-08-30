@@ -1,5 +1,5 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { PerformerListOptions } from '@vendure/common/src/generated-types';
+import { InputMaybe, PerformerListOptions, UpdatePerformerInput } from '@vendure/common/src/generated-types';
 import {
     Allow,
     Ctx,
@@ -23,21 +23,17 @@ export class PerformerAdminResolver {
         private performerService: PerformerService,
     ) {}
 
-    @Query()
-    async performer(@Ctx() ctx: RequestContext, @Args('id') id: string): Promise<Performer | null> {
-        return this.performerService.findOneById(ctx, id);
+    @Transaction()
+    @Mutation()
+    // @Allow(Permission.UpdateCatalog)
+    async updatePerformer(
+        @Ctx() ctx: RequestContext,
+        @Args('id') id: string,
+        @Args('input') input: UpdatePerformerInput,
+    ) {
+        return this.performerService.updateOneById(ctx, id, input);
+        // const performer = await this.connection.getEntityOrThrow(ctx, Performer, id);
+        // const updatedPerformer = patchEntity(performer, input);
+        // return this.connection.getRepository(ctx, Performer).save(updatedPerformer);
     }
-
-    @Query()
-    async performers(@Ctx() ctx: RequestContext): Promise<Performer[]> {
-        return this.performerService.findAll(ctx);
-    }
-
-    // @Query()
-    // async performers(
-    //     @Ctx() ctx: RequestContext,
-    //     @Args('options') options: PerformerListOptions,
-    // ): Promise<Performer[]> {
-    //     return this.performerService.findPerformers(ctx, options);
-    // }
 }

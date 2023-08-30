@@ -1,4 +1,5 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { InputMaybe, PerformerListOptions } from '@vendure/common/src/generated-types';
 import {
     Allow,
     Ctx,
@@ -21,9 +22,4 @@ export class PerformerShopResolver {
         private listQueryBuilder: ListQueryBuilder,
         private performerService: PerformerService,
     ) {}
-
-    @Query()
-    async performer(@Ctx() ctx: RequestContext, @Args('id') id: string): Promise<Performer | null> {
-        return this.performerService.findOneById(ctx, id);
-    }
 }
