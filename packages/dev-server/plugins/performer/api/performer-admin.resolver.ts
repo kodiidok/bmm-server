@@ -32,8 +32,12 @@ export class PerformerAdminResolver {
         @Args('input') input: UpdatePerformerInput,
     ) {
         return this.performerService.updateOneById(ctx, id, input);
-        // const performer = await this.connection.getEntityOrThrow(ctx, Performer, id);
-        // const updatedPerformer = patchEntity(performer, input);
-        // return this.connection.getRepository(ctx, Performer).save(updatedPerformer);
+    }
+
+    @Transaction()
+    @Mutation()
+    // @Allow(Permission.UpdateCatalog)
+    async createPerformer(@Ctx() ctx: RequestContext, @Args('input') input: UpdatePerformerInput) {
+        return this.performerService.createOne(ctx, input);
     }
 }

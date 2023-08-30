@@ -1,5 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { PerformerListOptions, UpdatePerformerInput } from '@vendure/common/src/generated-types';
+import {
+    CreatePerformerInput,
+    PerformerListOptions,
+    UpdatePerformerInput,
+} from '@vendure/common/src/generated-types';
 import {
     RequestContext,
     ListQueryBuilder,
@@ -74,4 +78,30 @@ export class PerformerService {
         const updatedPerformer = patchEntity(performer, input);
         return this.connection.getRepository(ctx, Performer).save(updatedPerformer);
     }
+
+    async createOne(ctx: RequestContext, input: CreatePerformerInput) {
+        const newPerformer = new Performer(input);
+        return this.connection.getRepository(ctx, Performer).save(newPerformer);
+    }
+
+    // async create(ctx: RequestContext, input: CreateProductInput): Promise<Translated<Product>> {
+    //     await this.slugValidator.validateSlugs(ctx, input, ProductTranslation);
+    //     const product = await this.translatableSaver.create({
+    //         ctx,
+    //         input,
+    //         entityType: Product,
+    //         translationType: ProductTranslation,
+    //         beforeSave: async p => {
+    //             await this.channelService.assignToCurrentChannel(p, ctx);
+    //             if (input.facetValueIds) {
+    //                 p.facetValues = await this.facetValueService.findByIds(ctx, input.facetValueIds);
+    //             }
+    //             await this.assetService.updateFeaturedAsset(ctx, p, input);
+    //         },
+    //     });
+    //     await this.customFieldRelationService.updateRelations(ctx, Product, input, product);
+    //     await this.assetService.updateEntityAssets(ctx, product, input);
+    //     this.eventBus.publish(new ProductEvent(ctx, product, 'created', input));
+    //     return assertFound(this.findOne(ctx, product.id));
+    // }
 }
