@@ -36,12 +36,14 @@ export const adminApiExtensions = gql`
         name: String!
         description: String
         type: String!
+        rating: Float
     }
 
     input UpdatePerformerInput {
         name: String!
         description: String
         type: String!
+        rating: Float
     }
 
     extend type Mutation {
