@@ -10,6 +10,7 @@ export const commonApiExtensions = gql`
         deletedAt: DateTime
         description: String
         rating: Float
+        featured: Boolean
     }
 
     type PerformerList implements PaginatedList {
@@ -37,6 +38,7 @@ export const adminApiExtensions = gql`
         description: String
         type: String!
         rating: Float
+        featured: Boolean
     }
 
     input UpdatePerformerInput {
@@ -44,6 +46,7 @@ export const adminApiExtensions = gql`
         description: String
         type: String!
         rating: Float
+        featured: Boolean
     }
 
     extend type Mutation {

@@ -46,7 +46,7 @@ export const devConfig: VendureConfig = {
         shopApiDebug: true,
     },
     authOptions: {
-        disableAuth: false,
+        disableAuth: true,
         tokenMethod: ['bearer', 'cookie'] as const,
         requireVerification: true,
         customPermissions: [],
@@ -68,12 +68,72 @@ export const devConfig: VendureConfig = {
             {
                 name: 'productType',
                 type: 'string',
+                label: [
+                    {
+                        languageCode: LanguageCode.en,
+                        value: 'Product Type',
+                    },
+                ],
                 ui: {
                     component: 'select-form-input',
                     options: [
-                        { value: 'ticket', label: [{ languageCode: LanguageCode.en, value: 'Ticket' }] },
+                        { value: 'event', label: [{ languageCode: LanguageCode.en, value: 'Event' }] },
                         { value: 'booking', label: [{ languageCode: LanguageCode.en, value: 'Booking' }] },
                     ],
+                },
+            },
+            {
+                name: 'dateTime',
+                type: 'datetime',
+                label: [
+                    {
+                        languageCode: LanguageCode.en,
+                        value: 'Date and Time',
+                    },
+                ],
+                ui: {
+                    component: 'date-form-input',
+                },
+            },
+            {
+                name: 'venue',
+                type: 'string',
+                label: [
+                    {
+                        languageCode: LanguageCode.en,
+                        value: 'Venue',
+                    },
+                ],
+                ui: {
+                    component: 'text-form-input',
+                },
+            },
+            {
+                name: 'performers',
+                type: 'relation',
+                entity: Performer,
+                nullable: true,
+                label: [
+                    {
+                        languageCode: LanguageCode.en,
+                        value: 'Performing Artists and Bands',
+                    },
+                ],
+                ui: {
+                    component: 'relation-form-input',
+                },
+            },
+            {
+                name: 'featured',
+                type: 'boolean',
+                label: [
+                    {
+                        languageCode: LanguageCode.en,
+                        value: 'Set as "Featured"',
+                    },
+                ],
+                ui: {
+                    component: 'checkbox-form-input',
                 },
             },
         ],

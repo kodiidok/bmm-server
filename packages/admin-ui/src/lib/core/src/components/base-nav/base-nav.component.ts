@@ -153,6 +153,27 @@ export class BaseNavComponent implements OnInit, OnDestroy {
                 ],
             },
             {
+                id: 'performers',
+                label: 'Performers',
+                // requiresPermission: allow(Permission.ReadCustomer, Permission.ReadCustomerGroup),
+                items: [
+                    {
+                        // requiresPermission: allow(Permission.ReadCustomer),
+                        id: 'bands',
+                        label: 'Bands',
+                        routerLink: ['/performer', 'bands'],
+                        icon: 'users',
+                    },
+                    {
+                        // requiresPermission: allow(Permission.ReadCustomerGroup),
+                        id: 'artists',
+                        label: 'Artists',
+                        routerLink: ['/performer', 'artists'],
+                        icon: 'users',
+                    },
+                ],
+            },
+            {
                 id: 'marketing',
                 label: _('nav.marketing'),
                 requiresPermission: allow(Permission.ReadPromotion),

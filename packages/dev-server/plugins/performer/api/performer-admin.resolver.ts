@@ -40,4 +40,14 @@ export class PerformerAdminResolver {
     async createPerformer(@Ctx() ctx: RequestContext, @Args('input') input: UpdatePerformerInput) {
         return this.performerService.createOne(ctx, input);
     }
+
+    // @Transaction()
+    // @Mutation()
+    // // @Allow(Permission.UpdateCatalog)
+    // async deletePerformer(
+    //     @Ctx() ctx: RequestContext,
+    //     @Args('id') id: string,
+    // ) {
+    //     return this.performerService.deleteOneById(ctx, id);
+    // }
 }

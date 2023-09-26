@@ -22,4 +22,7 @@ export class Performer extends VendureEntity {
 
     @Column({ nullable: true })
     deletedAt: Date;
+
+    @Column({ nullable: true })
+    featured?: boolean;
 }

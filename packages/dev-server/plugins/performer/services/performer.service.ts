@@ -84,6 +84,11 @@ export class PerformerService {
         return this.connection.getRepository(ctx, Performer).save(newPerformer);
     }
 
+    // async deleteOneById(ctx: RequestContext, id: ID) {
+    //     const performer = this.connection.getEntityOrThrow(ctx, Performer, id);
+    //     return this.connection.getRepository(ctx, Performer).remove();
+    // }
+
     // async create(ctx: RequestContext, input: CreateProductInput): Promise<Translated<Product>> {
     //     await this.slugValidator.validateSlugs(ctx, input, ProductTranslation);
     //     const product = await this.translatableSaver.create({
