@@ -11,6 +11,7 @@ export const commonApiExtensions = gql`
         description: String
         rating: Float
         featured: Boolean
+        products: [Product]
     }
 
     type PerformerList implements PaginatedList {
@@ -18,11 +19,14 @@ export const commonApiExtensions = gql`
         totalItems: Int!
     }
 
-    input PerformerListOptions
+    input PerformerListOptions {
+        skip: Int
+        take: Int
+    }
 
     extend type Query {
         performer(id: ID!): Performer
-        performers(options: PerformerListOptions): PerformerList!
+        performers(options: PerformerListOptions): [Performer]
     }
 `;
 

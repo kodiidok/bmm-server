@@ -1,6 +1,7 @@
+import { ProductList } from '@vendure/common/lib/generated-shop-types';
 import { DeepPartial } from '@vendure/common/lib/shared-types';
-import { VendureEntity } from '@vendure/core';
-import { Column, Entity } from 'typeorm';
+import { Product, ProductVariant, VendureEntity } from '@vendure/core';
+import { Column, Entity, ManyToMany, JoinTable } from 'typeorm';
 
 @Entity()
 export class Performer extends VendureEntity {
@@ -25,4 +26,18 @@ export class Performer extends VendureEntity {
 
     @Column({ nullable: true })
     featured?: boolean;
+
+    @ManyToMany(type => Product, { nullable: true })
+    @JoinTable({
+        name: 'product_custom_fields_performers_performer',
+        joinColumn: {
+            name: 'performerId',
+            referencedColumnName: 'id',
+        },
+        inverseJoinColumn: {
+            name: 'productId',
+            referencedColumnName: 'id',
+        },
+    })
+    products: Product[];
 }

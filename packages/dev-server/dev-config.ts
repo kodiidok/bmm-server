@@ -111,6 +111,8 @@ export const devConfig: VendureConfig = {
             {
                 name: 'performers',
                 type: 'relation',
+                list: true,
+                public: true,
                 entity: Performer,
                 nullable: true,
                 label: [

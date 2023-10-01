@@ -21,8 +21,10 @@ import {
     CustomFieldRelationService,
     TranslatorService,
     patchEntity,
+    ProductService,
 } from '@vendure/core';
 import { SlugValidator } from '@vendure/core/dist/service/helpers/slug-validator/slug-validator';
+import { Product } from '@vendure/core/src/entity';
 
 import { Performer } from '../../performer/entities/performer.entity';
 
@@ -34,6 +36,7 @@ export class PerformerService {
         private roleService: RoleService,
         private assetService: AssetService,
         private productVariantService: ProductVariantService,
+        private productService: ProductService,
         private facetValueService: FacetValueService,
         private taxRateService: TaxRateService,
         private collectionService: CollectionService,
@@ -45,32 +48,29 @@ export class PerformerService {
         private translator: TranslatorService,
     ) {}
 
-    async findOneById(
-        ctx: RequestContext,
-        id: ID,
-        // relations?: RelationPaths<Product>,
-    ) {
-        const performer = await this.connection.getRepository(ctx, Performer).findOne({
-            where: { id },
-        });
+    async findOneById(ctx: RequestContext, id: ID) {
+        const performer = await this.connection
+            .getRepository(ctx, Performer)
+            .createQueryBuilder('performer')
+            .leftJoinAndSelect('performer.products', 'product_custom_fields_performers_performer')
+            .where('performer.id = :id', { id })
+            .getOne();
+
+        // Check if performer exists
+        if (!performer) {
+            return null; // or handle as needed
+        }
+
         return performer;
     }
 
-    async findAll(
-        ctx: RequestContext,
-        options?: PerformerListOptions,
-        // relations?: RelationPaths<Product>,
-    ) {
-        return this.listQueryBuilder
-            .build(Performer, options || undefined, {
-                // relations: ['product'],
-                ctx,
-            })
-            .getManyAndCount()
-            .then(([items, totalItems]) => ({
-                items,
-                totalItems,
-            }));
+    async findAll(ctx: RequestContext, options?: PerformerListOptions | any) {
+        const result = await this.connection
+            .getRepository(ctx, Performer)
+            .createQueryBuilder('performer')
+            .leftJoinAndSelect('performer.products', 'product_custom_fields_performers_performer')
+            .getMany();
+        return result;
     }
 
     async updateOneById(ctx: RequestContext, id: ID, input: UpdatePerformerInput) {

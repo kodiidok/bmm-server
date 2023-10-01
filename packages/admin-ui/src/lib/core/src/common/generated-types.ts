@@ -826,12 +826,18 @@ export type CreatePaymentMethodInput = {
 
 export type CreatePerformerInput = {
   description?: InputMaybe<Scalars['String']>;
+  featured?: InputMaybe<Scalars['Boolean']>;
   name: Scalars['String'];
+  rating?: InputMaybe<Scalars['Float']>;
   type: Scalars['String'];
 };
 
 export type CreateProductCustomFieldsInput = {
+  dateTime?: InputMaybe<Scalars['DateTime']>;
+  featured?: InputMaybe<Scalars['Boolean']>;
+  performersIds?: InputMaybe<Array<Scalars['ID']>>;
   productType?: InputMaybe<Scalars['String']>;
+  venue?: InputMaybe<Scalars['String']>;
 };
 
 export type CreateProductInput = {
@@ -4268,24 +4274,15 @@ export type PaymentStateTransitionError = ErrorResult & {
 export type Performer = Node & {
   __typename?: 'Performer';
   createdAt: Scalars['DateTime'];
-  deletedAt: Scalars['DateTime'];
+  deletedAt?: Maybe<Scalars['DateTime']>;
   description?: Maybe<Scalars['String']>;
+  featured?: Maybe<Scalars['Boolean']>;
   id: Scalars['ID'];
   name: Scalars['String'];
+  products?: Maybe<Array<Maybe<Product>>>;
   rating?: Maybe<Scalars['Float']>;
   type: Scalars['String'];
   updatedAt: Scalars['DateTime'];
-};
-
-export type PerformerFilterParameter = {
-  createdAt?: InputMaybe<DateOperators>;
-  deletedAt?: InputMaybe<DateOperators>;
-  description?: InputMaybe<StringOperators>;
-  id?: InputMaybe<IdOperators>;
-  name?: InputMaybe<StringOperators>;
-  rating?: InputMaybe<NumberOperators>;
-  type?: InputMaybe<StringOperators>;
-  updatedAt?: InputMaybe<DateOperators>;
 };
 
 export type PerformerList = PaginatedList & {
@@ -4295,27 +4292,8 @@ export type PerformerList = PaginatedList & {
 };
 
 export type PerformerListOptions = {
-  /** Allows the results to be filtered */
-  filter?: InputMaybe<PerformerFilterParameter>;
-  /** Specifies whether multiple "filter" arguments should be combines with a logical AND or OR operation. Defaults to AND. */
-  filterOperator?: InputMaybe<LogicalOperator>;
-  /** Skips the first n results, for use in pagination */
   skip?: InputMaybe<Scalars['Int']>;
-  /** Specifies which properties to sort the results by */
-  sort?: InputMaybe<PerformerSortParameter>;
-  /** Takes n results, for use in pagination */
   take?: InputMaybe<Scalars['Int']>;
-};
-
-export type PerformerSortParameter = {
-  createdAt?: InputMaybe<SortOrder>;
-  deletedAt?: InputMaybe<SortOrder>;
-  description?: InputMaybe<SortOrder>;
-  id?: InputMaybe<SortOrder>;
-  name?: InputMaybe<SortOrder>;
-  rating?: InputMaybe<SortOrder>;
-  type?: InputMaybe<SortOrder>;
-  updatedAt?: InputMaybe<SortOrder>;
 };
 
 /**
@@ -4375,6 +4353,8 @@ export enum Permission {
   CreateOrder = 'CreateOrder',
   /** Grants permission to create PaymentMethod */
   CreatePaymentMethod = 'CreatePaymentMethod',
+  /** Allows creating performers via Admin API */
+  CreatePerformer = 'CreatePerformer',
   /** Grants permission to create Product */
   CreateProduct = 'CreateProduct',
   /** Grants permission to create Promotion */
@@ -4419,6 +4399,8 @@ export enum Permission {
   DeleteOrder = 'DeleteOrder',
   /** Grants permission to delete PaymentMethod */
   DeletePaymentMethod = 'DeletePaymentMethod',
+  /** Allows deleting performers via Admin API */
+  DeletePerformer = 'DeletePerformer',
   /** Grants permission to delete Product */
   DeleteProduct = 'DeleteProduct',
   /** Grants permission to delete Promotion */
@@ -4468,6 +4450,8 @@ export enum Permission {
   ReadOrder = 'ReadOrder',
   /** Grants permission to read PaymentMethod */
   ReadPaymentMethod = 'ReadPaymentMethod',
+  /** Allows rading performers via Admin API and Shop API */
+  ReadPerformer = 'ReadPerformer',
   /** Grants permission to read Product */
   ReadProduct = 'ReadProduct',
   /** Grants permission to read Promotion */
@@ -4516,6 +4500,8 @@ export enum Permission {
   UpdateOrder = 'UpdateOrder',
   /** Grants permission to update PaymentMethod */
   UpdatePaymentMethod = 'UpdatePaymentMethod',
+  /** Allows updating performers via Admin API and Shop API */
+  UpdatePerformer = 'UpdatePerformer',
   /** Grants permission to update Product */
   UpdateProduct = 'UpdateProduct',
   /** Grants permission to update Promotion */
@@ -4591,20 +4577,27 @@ export type ProductVariantListArgs = {
 
 export type ProductCustomFields = {
   __typename?: 'ProductCustomFields';
+  dateTime?: Maybe<Scalars['DateTime']>;
+  featured?: Maybe<Scalars['Boolean']>;
+  performers?: Maybe<Array<Performer>>;
   productType?: Maybe<Scalars['String']>;
+  venue?: Maybe<Scalars['String']>;
 };
 
 export type ProductFilterParameter = {
   createdAt?: InputMaybe<DateOperators>;
+  dateTime?: InputMaybe<DateOperators>;
   description?: InputMaybe<StringOperators>;
   enabled?: InputMaybe<BooleanOperators>;
   facetValueId?: InputMaybe<IdOperators>;
+  featured?: InputMaybe<BooleanOperators>;
   id?: InputMaybe<IdOperators>;
   languageCode?: InputMaybe<StringOperators>;
   name?: InputMaybe<StringOperators>;
   productType?: InputMaybe<StringOperators>;
   slug?: InputMaybe<StringOperators>;
   updatedAt?: InputMaybe<DateOperators>;
+  venue?: InputMaybe<StringOperators>;
 };
 
 export type ProductList = PaginatedList & {
@@ -4695,12 +4688,15 @@ export type ProductOptionTranslationInput = {
 
 export type ProductSortParameter = {
   createdAt?: InputMaybe<SortOrder>;
+  dateTime?: InputMaybe<SortOrder>;
   description?: InputMaybe<SortOrder>;
+  featured?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
   name?: InputMaybe<SortOrder>;
   productType?: InputMaybe<SortOrder>;
   slug?: InputMaybe<SortOrder>;
   updatedAt?: InputMaybe<SortOrder>;
+  venue?: InputMaybe<SortOrder>;
 };
 
 export type ProductTranslation = {
@@ -5048,7 +5044,7 @@ export type Query = {
   paymentMethods: PaymentMethodList;
   pendingSearchIndexUpdates: Scalars['Int'];
   performer?: Maybe<Performer>;
-  performers: PerformerList;
+  performers?: Maybe<Array<Maybe<Performer>>>;
   /** Used for real-time previews of the contents of a Collection */
   previewCollectionVariants: ProductVariantList;
   /** Get a Product either by id or slug. If neither id nor slug is specified, an error will result. */
@@ -6411,12 +6407,18 @@ export type UpdatePaymentMethodInput = {
 
 export type UpdatePerformerInput = {
   description?: InputMaybe<Scalars['String']>;
+  featured?: InputMaybe<Scalars['Boolean']>;
   name: Scalars['String'];
+  rating?: InputMaybe<Scalars['Float']>;
   type: Scalars['String'];
 };
 
 export type UpdateProductCustomFieldsInput = {
+  dateTime?: InputMaybe<Scalars['DateTime']>;
+  featured?: InputMaybe<Scalars['Boolean']>;
+  performersIds?: InputMaybe<Array<Scalars['ID']>>;
   productType?: InputMaybe<Scalars['String']>;
+  venue?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateProductInput = {

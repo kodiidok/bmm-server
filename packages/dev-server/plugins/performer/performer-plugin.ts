@@ -1,4 +1,4 @@
-import { PluginCommonModule, VendurePlugin } from '@vendure/core';
+import { PluginCommonModule, ProductService, VendurePlugin } from '@vendure/core';
 
 import { Performer } from '../performer/entities/performer.entity';
 
