@@ -65,11 +65,20 @@ export class PerformerService {
     }
 
     async findAll(ctx: RequestContext, options?: PerformerListOptions | any) {
-        const result = await this.connection
+        const productPerformer = this.connection
             .getRepository(ctx, Performer)
             .createQueryBuilder('performer')
-            .leftJoinAndSelect('performer.products', 'product_custom_fields_performers_performer')
-            .getMany();
+            .leftJoinAndSelect('performer.products', 'product_custom_fields_performers_performer');
+
+        if (options.type) {
+            productPerformer.andWhere('performer.type = :type', { type: options.type });
+        }
+
+        if (options.featured !== undefined) {
+            productPerformer.andWhere('performer.featured = :featured', { featured: options.featured });
+        }
+
+        const result = await productPerformer.take(options.take).skip(options.skip).getMany();
         return result;
     }
 

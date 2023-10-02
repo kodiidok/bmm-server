@@ -22,6 +22,8 @@ export const commonApiExtensions = gql`
     input PerformerListOptions {
         skip: Int
         take: Int
+        type: String
+        featured: Boolean
     }
 
     extend type Query {

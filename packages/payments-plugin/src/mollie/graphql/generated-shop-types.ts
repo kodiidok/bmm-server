@@ -2322,8 +2322,10 @@ export type PerformerList = PaginatedList & {
 };
 
 export type PerformerListOptions = {
+    featured?: InputMaybe<Scalars['Boolean']>;
     skip?: InputMaybe<Scalars['Int']>;
     take?: InputMaybe<Scalars['Int']>;
+    type?: InputMaybe<Scalars['String']>;
 };
 
 /**
